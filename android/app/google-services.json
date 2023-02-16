@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "427789228693",
+    "project_id": "leafy-c803d",
+    "storage_bucket": "leafy-c803d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427789228693:android:8a26b10823423c2719d99c",
+        "android_client_info": {
+          "package_name": "com.leafy.leafy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427789228693-54i91cj5th6vpa3gicgnog9toup7eic4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leafy.leafy",
+            "certificate_hash": "10e18bc979b1d69251fde3f5d1ab2078b6c9fa33"
+          }
+        },
+        {
+          "client_id": "427789228693-gg5f76ps6l2tj470uelj2r1vsvo9k8ne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYl0l3dBJ4lEhtUuprjpdMXBLsMo_yJ9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427789228693-16rlq1qmcpgn3qn9v60tb7jr6o474aug.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "427789228693-02lu5cspnhk156tupbvicd70nc7rafic.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.leafy.leafy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

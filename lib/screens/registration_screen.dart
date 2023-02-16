@@ -2,8 +2,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:leafy/utils/palette_orange.dart';
-
-import '../services/firebase_auth.dart';
 import '../utils/palette_blue.dart';
 import '../utils/showSnackBar.dart';
 
@@ -77,13 +75,13 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
     confirmPasswordController.dispose();
   }
 
-  void signUpUser() async{
-    FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
+  /*void signUpUser() async{
+    auth(FirebaseAuth.instance).signUpWithEmail(
         email: emailController.text,
         password: passwordController.text,
         context: context
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context){
@@ -189,7 +187,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
     );
 
     // Register Button
-    final registerButton = Material(
+    /*final registerButton = Material(
       elevation: 2,
       borderRadius: BorderRadius.circular(10),
       child: TextButton(
@@ -215,7 +213,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
           ),
         ),
       ),
-    );
+    );*/
 
     return Scaffold(
       backgroundColor: PaletteBlue.blueToDark,
@@ -350,7 +348,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
 
                     //confirmPasswordField,
                     const SizedBox(height:35),
-                    registerButton,
+                   // registerButton,
                   ],
                 )
             ),

@@ -1,10 +1,5 @@
-import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:leafy/screens/home_screen.dart';
-import 'package:leafy/screens/registration_screen.dart';
-import 'package:leafy/services/firebase_auth.dart';
 import 'package:leafy/utils/palette_orange.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';

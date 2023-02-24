@@ -104,30 +104,6 @@ class _StartingScreenState extends State<StartingScreen> {
       ),
     );
 
-    // Register Button
-    final registerButton = Material(
-      elevation: 2,
-      borderRadius: BorderRadius.circular(10),
-      child: TextButton(
-        onPressed: (){
-         Navigator.pushNamed(context, '/register');
-        },
-        style: TextButton.styleFrom(
-          foregroundColor: PaletteBlue.blueToDark,
-          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          minimumSize:  Size(MediaQuery.of(context).size.width,20),
-          alignment: Alignment.center,
-        ),
-        child: const Text(
-          "Register",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
     // Login Button
     final loginButton = Material(
       elevation: 2,
@@ -160,7 +136,7 @@ class _StartingScreenState extends State<StartingScreen> {
         onPressed: (){
           authProvider.signInWithGoogle(context).then((success){
             if(success){
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/main');
             }else{
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
@@ -188,7 +164,7 @@ class _StartingScreenState extends State<StartingScreen> {
     );
 
     return Scaffold(
-    backgroundColor: bgColor,
+      backgroundColor: bgColor,
       body: Center(
         child: SingleChildScrollView(
             child: Padding(
@@ -215,13 +191,9 @@ class _StartingScreenState extends State<StartingScreen> {
                         ],
                       )
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(child:registerButton),
-                      SizedBox(width:20),
-                      Expanded(child: loginButton),
-                    ],
-                  ),
+                  //Expanded(child:registerButton),
+                  SizedBox(width:20),
+                  loginButton,
                   SizedBox(height:25),
                   Row(
                     children: <Widget>[
@@ -244,6 +216,25 @@ class _StartingScreenState extends State<StartingScreen> {
                    ),
                   SizedBox(height:25),
                   googleButton,
+                  SizedBox(height:25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:<Widget> [
+                      const Text('Not a member ? '),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/register');
+                        },
+                        child: const Text(
+                          'Join now',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: PaletteBlue.blueToDark,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -256,7 +247,7 @@ class _StartingScreenState extends State<StartingScreen> {
     if(_formKey.currentState!.validate()){
         final success = await authProvider.signInWithEmail(context, _emailController.text, _passwordController.text);
         if(success){
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/main');
         }else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content:

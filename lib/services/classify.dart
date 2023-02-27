@@ -7,7 +7,7 @@ class Classifier {
   late List outputs;
 
   Future<List?> getDisease(ImageSource imageSource) async {
-    var image = await ImagePicker().pickImage(source: imageSource);
+    var image = await ImagePicker().pickImage(source: imageSource, imageQuality: 50);
     imageFile = File(image!.path);
     await loadModel();
     var result = await classifyImage(imageFile);
@@ -31,7 +31,9 @@ class Classifier {
         numResults: 2,
         threshold: 0.2,
         asynch: true);
-
     return output;
   }
+
+
+
 }

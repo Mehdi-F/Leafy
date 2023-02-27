@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -124,6 +127,28 @@ class AuthProvider  with ChangeNotifier {
         return false;
       }
   }
+
+  Future<String?> uploadProfilePicture(File imageFile) async {
+    try {
+      final User? user = _auth.currentUser;
+      final Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('user/profile/${user!.uid}/${DateTime.now().toString()}');
+      final UploadTask uploadTask = storageReference.putFile(imageFile);
+      await uploadTask.whenComplete(() => null);
+      final String photoUrl = await storageReference.getDownloadURL();
+      await user.updatePhotoURL(photoUrl);
+      _user = _auth.currentUser;
+      notifyListeners();
+      return photoUrl; // Return the URL of the uploaded image
+    } on FirebaseException catch (e) {
+      print(e.message);
+      return null;
+    }
+  }
+
+
+
   // Sign out
   void signOut(BuildContext context) async {
     await _user!.updatePhotoURL('');

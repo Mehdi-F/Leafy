@@ -9,7 +9,6 @@ import 'package:leafy/screens/registration_screen.dart';
 import 'package:leafy/screens/results_screen.dart';
 import 'package:leafy/screens/starting_screen.dart';
 import 'package:leafy/providers/auth_provider.dart';
-import 'package:leafy/providers/user_provider.dart';
 import 'package:leafy/utils/palette_blue.dart';
 import 'package:leafy/utils/palette_orange.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +35,6 @@ class MyApp extends StatelessWidget {
       providers:[
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ChangeNotifierProvider<DiseaseProvider>(create: (_) => DiseaseProvider()),
-        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
       ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,16 +1,48 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
 import '../utils/palette_blue.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+  File? _image;
+
+  final picker = ImagePicker();
+
+  void _onChangePicture(BuildContext context) async {
+    final authProvider = context.read<AuthProvider>();
+
+    // Pick an image from the device's gallery
+    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Upload the image to Firebase Storage and get the URL of the uploaded image
+      final photoUrl = await authProvider.uploadProfilePicture(File(pickedFile.path));
+
+      if (photoUrl != null) {
+        // Update the user's photo URL in the Firebase Authentication database
+        await authProvider.user!.updatePhotoURL(photoUrl);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to change profile picture.')),
+        );
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //final userProvider = context.watch<UserProvider>();
     final authProvider = context.watch<AuthProvider>();
 
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -61,6 +93,22 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
 
+    // Change picture Button
+    final changePictureButton = Positioned(
+      bottom: 0,
+      right: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+        ),
+        child: IconButton(
+          icon: const Icon(Icons.camera_alt),
+          onPressed: () => _onChangePicture(context),
+        ),
+      ),
+    );
+
     return Scaffold(
       backgroundColor: PaletteBlue.blueToDark,
       body: Center(
@@ -70,16 +118,25 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 50.0,
-                  backgroundColor: Colors.white,
-                  backgroundImage: photoUrl.isNotEmpty ? NetworkImage(photoUrl) : null,
-                  child: photoUrl.isEmpty
-                      ? Text(
-                    name.isNotEmpty ? name[0].toUpperCase() : '',
-                    style: TextStyle(fontSize: 40.0),
-                  )
-                      : null,
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 50.0,
+                      backgroundColor: Colors.white,
+                      backgroundImage: photoUrl.isNotEmpty ? NetworkImage(photoUrl) : null,
+                      child: photoUrl.isEmpty
+                          ? Text(
+                        name.isNotEmpty ? name[0].toUpperCase() : '',
+                        style: TextStyle(fontSize: 40.0, color: PaletteBlue.blueToDark),
+                      ) : null,
+                    ),
+                    changePictureButton,
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(
+                  name,
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 SizedBox(height: 30),
                 signOutButton,

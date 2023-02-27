@@ -20,11 +20,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-  static const List<Widget> _screens = [
-    HomeScreen(),
-    ProfileScreen(),
-  ];
+
+  final PageController _pageController = PageController(initialPage: 0);
+  int _currentPageIndex = 0;
+  //static const List<Widget> _screens = [HomeScreen(), ProfileScreen(),];
+  //int _selectedIndex = 0;
 
   late Box<Disease> _diseaseBox;
 
@@ -45,16 +45,21 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-
   @override
   void dispose() {
     Hive.close();
+    _pageController.dispose();
     super.dispose();
   }
 
-  void _onItemTapped(int index) {
+  /*void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }*/
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPageIndex = index;
     });
   }
 
@@ -65,7 +70,6 @@ class _MainScreenState extends State<MainScreen> {
     // Hive service
     HiveService hiveService = HiveService();
     // Data
-    //Size size = MediaQuery.of(context).size;
     final Classifier classifier = Classifier();
     late Disease disease;
 
@@ -75,7 +79,14 @@ class _MainScreenState extends State<MainScreen> {
       },
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: _screens[_selectedIndex],
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: _onPageChanged,
+          children: <Widget>[
+            HomeScreen(),
+            ProfileScreen(),
+          ],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -87,14 +98,20 @@ class _MainScreenState extends State<MainScreen> {
               label: 'Profile',
             ),
           ],
-          currentIndex: _selectedIndex,
+          currentIndex: _currentPageIndex,
           selectedItemColor: PaletteOrange.orangeToDark,
           unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped,
+          onTap: (index) {
+            _pageController.animateToPage(
+              index,
+              duration: Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+            );
+          },
         ),
         floatingActionButton: SpeedDial(
           icon: Icons.camera_alt,
-          backgroundColor: PaletteBlue.blueToDark,
+          backgroundColor: PaletteOrange.orangeToDark.shade50,
           foregroundColor: Colors.white,
           elevation: 4,
           children: [
@@ -104,7 +121,7 @@ class _MainScreenState extends State<MainScreen> {
               foregroundColor: Colors.white,
               label: 'Take photo',
               onTap: () async {
-                late double _confidence;
+                double _confidence = 0.0;
 
                 await classifier.getDisease(ImageSource.camera).then((value) {
                   disease = Disease(
@@ -114,7 +131,7 @@ class _MainScreenState extends State<MainScreen> {
                   _confidence = value[0]['confidence'];
                 });
                 // Check confidence
-                if (_confidence > 0.8) {
+                if (_confidence > 0.5) {
                   // Set disease for Disease Service
                   diseaseProvider.setDiseaseValue(disease);
                   // Save disease
@@ -134,16 +151,19 @@ class _MainScreenState extends State<MainScreen> {
               foregroundColor: Colors.white,
               label: 'Choose File',
               onTap: () async {
-                late double _confidence;
+                double _confidence = 0.0;
                 await classifier.getDisease(ImageSource.gallery).then((value) {
-                  disease = Disease(
-                      name: value![0]["label"],
-                      imagePath: classifier.imageFile.path);
-
-                  _confidence = value[0]['confidence'];
+                  if (value != null && value.isNotEmpty) {
+                    disease = Disease(name: value[0]["label"], imagePath: classifier.imageFile.path);
+                    _confidence = value[0]['confidence'];
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('We are not sure what disease your plant has.'),
+                    ));
+                  }
                 });
                 // Check confidence
-                if (_confidence > 0.8) {
+                if (_confidence > 0.5) {
                   // Set disease for Disease Service
                   diseaseProvider.setDiseaseValue(disease);
                   // Save disease

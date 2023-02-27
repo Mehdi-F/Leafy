@@ -2,6 +2,7 @@ Apple Apple scab
 Apple Black rot
 Apple Cedar apple rust
 Apple healthy
+Background without leaves
 Blueberry healthy
 Cherry healthy
 Cherry Powdery mildew
@@ -36,4 +37,3 @@ Tomato Spider mites Two-spotted spider mite
 Tomato Target Spot
 Tomato Tomato mosaic virus
 Tomato Tomato Yellow Leaf Curl Virus
-

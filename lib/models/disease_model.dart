@@ -49,6 +49,11 @@ class Disease extends HiveObject {
         possibleSolution = "N/A";
         break;
 
+      case "Background without leaves":
+        possibleCauses = "This is not a picture of a leaf.";
+        possibleSolution = "N/A";
+        break;
+
       case "Blueberry healthy":
         possibleCauses = "Crops are okay.";
         possibleSolution = "N/A";

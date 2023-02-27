@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:leafy/utils/palette_blue.dart';
+import 'package:leafy/utils/palette_orange.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
+                          color: PaletteOrange.orangeToDark
                         ),
                       ),
                       SizedBox(height: 16),
@@ -48,20 +50,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           children: <InlineSpan>[
                             WidgetSpan(
-                              child: Icon(Icons.camera_alt),
+                              child: Icon(Icons.camera_alt, color: Colors.white,),
                             ),
                             TextSpan(
                               text: ' icon to take a photo or ',
                             ),
                             WidgetSpan(
-                              child: Icon(Icons.image),
+                              child: Icon(Icons.image, color: Colors.white,),
                             ),
                             TextSpan(
                               text: ' icon to choose a file from your gallery.',
                             ),
                           ],
                         ),
-                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),

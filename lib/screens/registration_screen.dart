@@ -211,7 +211,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
           filled: true,
           fillColor: Colors.white,
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Password",
+          hintText: "Confirm password",
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(10),

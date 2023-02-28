@@ -5,9 +5,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras.layers import Activation, Dropout, Flatten, Dense
 from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.utils import plot_model
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras import regularizers
 
 # Variables
 img_width, img_height = 256, 256
@@ -21,7 +19,7 @@ epochs = 20
 
 # Model architecture definition
 model = Sequential()
-model.add(Conv2D(32, (3, 3), input_shape=(img_width, img_height, 3), kernel_regularizer=regularizers.l2(0.01)))
+model.add(Conv2D(32, (3, 3), input_shape=(img_width, img_height, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -44,7 +42,7 @@ model.add(Dropout(0.5))
 model.add(Dense(39, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy',
-              optimizer=Adam(learning_rate=0.001),
+              optimizer='rmsprop',
               metrics=['accuracy'])
 
 
@@ -92,6 +90,3 @@ callbacks=[early_stopping])
 
 # Saving the model
 model.save('plant_disease.h5')
-
-# Visualize the model architecture as a PNG
-plot_model(model, to_file='model.png', show_shapes=True)

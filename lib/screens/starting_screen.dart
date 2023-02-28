@@ -201,7 +201,7 @@ class _StartingScreenState extends State<StartingScreen> {
                         Divider(color: greyText),
                       ),
                       SizedBox(width:20),
-                      Text("Ou",
+                      Text("Or",
                       style: TextStyle(
                         color: greyText,
                         fontSize: 14,
